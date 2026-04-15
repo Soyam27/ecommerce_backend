@@ -18,9 +18,11 @@
     "path": "^0.12.7",
     "prisma": "^7.7.0",
     "ps": "^1.0.0",
+    "ts-node": "^10.9.2",
     "typescript": "^6.0.2"
   },
   "dependencies": {
+    "@prisma/adapter-pg": "^7.7.0",
     "@prisma/client": "^7.7.0",
     "@types/express": "^5.0.6",
     "bcryptjs": "^3.0.3",
