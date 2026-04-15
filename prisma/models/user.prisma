@@ -1,0 +1,24 @@
+model User{
+    id String @id @default(uuid())
+    name String
+    email String @unique
+    password String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @default(now())
+
+    refreshTokens RefreshToken[]
+}
+
+model RefreshToken{
+    id String @id @default(uuid())
+    jti String @unique
+    tokenHash String
+    userId String
+    revoked Boolean
+    replacedBy String
+    createdAt DateTime @default(now())
+    revokedAt DateTime?
+    expiresAt DateTime
+
+    user User @relation(fields: [userId], references: [id])
+}

@@ -1,0 +1,18 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres
+    container_name: postgres_container
+    ports:
+      - "2727:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      PGDATA: /data
+    volumes:
+      - postgres_data:/data
+
+volumes:
+  postgres_data:

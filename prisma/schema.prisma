@@ -1,0 +1,110 @@
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+model inventory{
+    productId String @id
+    availableStock Int
+    reservedStock Int
+    createdAt DateTime @default(now())
+    updatedAt DateTime @default(now())
+}
+enum MessageStatus{
+    PENDING
+    QUEUED
+    SENT
+}
+
+model Notification{
+    id String @id @default(uuid())
+    userid String
+    status MessageStatus @default(PENDING)
+    message String
+    createdAt DateTime @default(now())
+    deliveredAt DateTime?
+}
+enum Update{
+    PENDING
+    PAID 
+    FAILED
+    CANCELED
+}
+model Order{
+    id String @id @default(uuid())
+    userId String
+    total_amount Decimal @db.Decimal(10,2)
+    status Update @default(PENDING)
+    createdAt DateTime @default(now())
+
+    orders OrderItems[]
+}
+
+model OrderItems{
+    id String @id @default(uuid())
+    productid String
+    orderid String
+    price_at_purchase Decimal @db.Decimal(10,2)
+    quantity Int
+
+    order Order @relation(fields: [orderid], references: [id])
+}
+enum Status{
+    PENDING
+    SUCCESS
+    FAILED
+}
+model Payment{
+    id String @id @default(uuid())
+    orderid String
+    amount Decimal @db.Decimal(10,2)
+    status Status @default(PENDING)
+    createdAt DateTime @default(now())
+}
+model Category{
+    id String @id @default(uuid())
+    name String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @default(now())
+
+    products Product[]
+}
+
+model Product{
+    id String @id @default(uuid())
+    name String
+    description String
+    category String
+    price Decimal @db.Decimal(10, 2)
+    createdAt DateTime @default(now())
+    updatedAt DateTime @default(now())
+
+    cat Category @relation(fields: [category], references: [id])
+}
+model User{
+    id String @id @default(uuid())
+    name String
+    email String @unique
+    password String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @default(now())
+
+    refreshTokens RefreshToken[]
+}
+
+model RefreshToken{
+    id String @id @default(uuid())
+    jti String @unique
+    tokenHash String
+    userId String
+    revoked Boolean
+    replacedBy String
+    createdAt DateTime @default(now())
+    revokedAt DateTime?
+    expiresAt DateTime
+
+    user User @relation(fields: [userId], references: [id])
+}

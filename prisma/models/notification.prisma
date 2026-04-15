@@ -1,0 +1,14 @@
+enum MessageStatus{
+    PENDING
+    QUEUED
+    SENT
+}
+
+model Notification{
+    id String @id @default(uuid())
+    userid String
+    status MessageStatus @default(PENDING)
+    message String
+    createdAt DateTime @default(now())
+    deliveredAt DateTime?
+}

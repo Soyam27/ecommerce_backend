@@ -1,0 +1,25 @@
+enum Update{
+    PENDING
+    PAID 
+    FAILED
+    CANCELED
+}
+model Order{
+    id String @id @default(uuid())
+    userId String
+    total_amount Decimal @db.Decimal(10,2)
+    status Update @default(PENDING)
+    createdAt DateTime @default(now())
+
+    orders OrderItems[]
+}
+
+model OrderItems{
+    id String @id @default(uuid())
+    productid String
+    orderid String
+    price_at_purchase Decimal @db.Decimal(10,2)
+    quantity Int
+
+    order Order @relation(fields: [orderid], references: [id])
+}

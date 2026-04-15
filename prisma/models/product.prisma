@@ -1,0 +1,20 @@
+model Category{
+    id String @id @default(uuid())
+    name String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @default(now())
+
+    products Product[]
+}
+
+model Product{
+    id String @id @default(uuid())
+    name String
+    description String
+    category String
+    price Decimal @db.Decimal(10, 2)
+    createdAt DateTime @default(now())
+    updatedAt DateTime @default(now())
+
+    cat Category @relation(fields: [category], references: [id])
+}

@@ -1,0 +1,12 @@
+enum Status{
+    PENDING
+    SUCCESS
+    FAILED
+}
+model Payment{
+    id String @id @default(uuid())
+    orderid String
+    amount Decimal @db.Decimal(10,2)
+    status Status @default(PENDING)
+    createdAt DateTime @default(now())
+}
