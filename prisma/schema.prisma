@@ -75,6 +75,7 @@ model Category{
 
 model Product{
     id String @id @default(uuid())
+    retailerId String
     name String
     description String
     category String
@@ -83,16 +84,25 @@ model Product{
     updatedAt DateTime @default(now())
 
     cat Category @relation(fields: [category], references: [id])
+    retId User @relation(fields: [retailerId],references: [id])
+}
+
+enum Role{
+    Admin
+    User
+    Retailer
 }
 model User{
     id String @id @default(uuid())
     name String
+    role Role @default(User)
     email String @unique
     password String
     createdAt DateTime @default(now())
     updatedAt DateTime @default(now())
 
     refreshTokens RefreshToken[]
+    products Product[]
 }
 
 model RefreshToken{
