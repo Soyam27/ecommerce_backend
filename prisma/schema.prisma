@@ -51,6 +51,7 @@ model OrderItems{
     quantity Int
 
     order Order @relation(fields: [orderid], references: [id])
+    @@unique([productid,orderid])
 }
 enum Status{
     PENDING
@@ -84,7 +85,6 @@ model Product{
     updatedAt DateTime @default(now())
 
     cat Category @relation(fields: [category], references: [id])
-    retId User @relation(fields: [retailerId],references: [id])
 }
 
 enum Role{
@@ -102,7 +102,6 @@ model User{
     updatedAt DateTime @default(now())
 
     refreshTokens RefreshToken[]
-    products Product[]
 }
 
 model RefreshToken{
@@ -117,4 +116,25 @@ model RefreshToken{
     expiresAt DateTime
 
     user User @relation(fields: [userId], references: [id])
+}
+
+model CartItems{
+    id String @id @default(uuid())
+    cartId String
+    productId String
+    quantity Int @default(1)
+    price Decimal @db.Decimal(10,2)
+    createdAt DateTime @default(now())
+    updatedAt DateTime @default(now())
+    cart Cart @relation(fields: [cartId],references: [id])
+    @@unique([cartId,productId])
+}
+
+model Cart{
+    id String @id @default(uuid())
+    userId String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @default(now())
+    
+    cartItems CartItems[]
 }
